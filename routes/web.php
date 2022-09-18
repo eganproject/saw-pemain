@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlternatifController;
+use App\Http\Controllers\HasilController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\PenilaianController;
 use Illuminate\Foundation\Application;
@@ -43,9 +44,13 @@ Route::middleware(['auth', 'verified'])->controller(KriteriaController::class)->
     Route::delete('/kriteria/delete', 'destroy');
     Route::get('/kriteria/editkriteriapemain', 'editkriteriapemain')->name('kriteria.editkriteriapemain');
     Route::post('/kriteria/updatekriteriapemain', 'updatekriteriapemain');
+    Route::post('/kriteria/ubahPerbandingan',  'ubahPerbandingan');
+    Route::post('/kriteria/updateBobot',  'updateBobot');
 });
+
 
 Route::get('/penilaian', [PenilaianController::class, 'index'])->middleware(['auth', 'verified'])->name('penilaian');
 
+Route::get('hasil', [HasilController::class, 'index'])->middleware(['auth', 'verified'])->name('hasil');
 
 require __DIR__ . '/auth.php';

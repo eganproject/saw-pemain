@@ -30,13 +30,13 @@ const TableKriteriaPemain = ({data, alternatif, kriteria}) =>{
                 
                 return(
                     <tr key={i}>
-                        <td className="text-center border border-slate-300 bg-slate-200">{alternatif.kode}</td>
+                        <td className="text-center border border-slate-500 bg-slate-200">{alternatif.kode}</td>
                         {
                             data.filter(nilai => nilai.id_alternatif == alternatif.id).map((filteredNilai, i )=> (
-                                <td className="text-center border border-slate-300" key={i}>{filteredNilai.nilai}</td>
+                                <td className="text-center border border-slate-500" key={i}>{filteredNilai.nilai}</td>
                             ))
                         }
-                        <td className="text-center border border-slate-300">
+                        <td className="text-center border border-slate-500">
                             <Link href={route('kriteria.editkriteriapemain')} method="get" data={{ id: alternatif.id }} className="rounded px-1 py-1 text-white bg-emerald-500 hover:rounded-lg hover:cursor-pointer">
                             Edit
                             </Link>

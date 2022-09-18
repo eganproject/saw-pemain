@@ -52,7 +52,7 @@ export default function Penilaian(props) {
                                         <div className="p-6 bg-white border-b border-gray-200">
                                             <h2 className='font-bold text-center text-xl'>Pembobotan</h2>
 
-                                            <TablePembobotan kriteria={props.kriteria} alternatif={props.alternatif} kriteriaPemain={props.kriteriaPemain} min={props.min} max={props.max}/>
+                                            <TablePembobotan kriteria={props.kriteria} alternatif={props.alternatif} kriteriaPemain={props.kriteriaPemain} min={props.min} max={props.max} simpul={props.simpul}/>
                                         </div>
                                     </div>
                                 </div>

@@ -10,6 +10,8 @@ class Kriteria extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    // protected $foreignkey = ['id_kriteria'];
+    // protected $with = ['KriteriaPemain'];
 
     function KriteriaPemain()
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alternatif;
 use App\Models\Kriteria;
 use App\Models\KriteriaPemain;
+use App\Models\Perbandingan;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -20,12 +21,22 @@ class KriteriaController extends Controller
         $kriteria = Kriteria::paginate(5);
         $kriteriaPemain = KriteriaPemain::all();
         $alternatif = Alternatif::all();
+        $perbandingan = Perbandingan::all();
+
+        $krt = Kriteria::all();
+
+        $jumlhperb = [];
+        foreach ($krt as $k) {
+            $x = Perbandingan::where(['id_kriteria2' => $k->id])->sum('nilai');
+
+            array_push($jumlhperb, ['id' => $k->id, 'jumlah' => round($x, 2)]);
+        }
         // $nilai = [];
         // foreach ($kriteriaPemain as $kp) {
         //     $nilai[] = ['id_alternatif' => $kp->id_alternatif, 'nilai' => $kp->nilai];
         // }
 
-        return Inertia::render('Admin/Kriteria', ['kriteria' => Kriteria::all(), 'kriteriaPemain' => $kriteriaPemain, 'alternatif' => $alternatif, 'dataKriteria' => $kriteria]);
+        return Inertia::render('Admin/Kriteria', ['kriteria' => Kriteria::all(), 'kriteriaPemain' => $kriteriaPemain, 'alternatif' => $alternatif, 'dataKriteria' => $kriteria, 'perbandingan' => $perbandingan, 'jumlahperb' => $jumlhperb]);
     }
 
     /**
@@ -54,6 +65,18 @@ class KriteriaController extends Controller
         $alternatif = Alternatif::all();
         foreach ($alternatif as $alt) {
             KriteriaPemain::create(['id_alternatif' => $alt['id'], 'id_kriteria' => $newKriteria['id'], 'nilai' => -1]);
+        }
+
+        $kriteria = Kriteria::all();
+        // Perbandingan::create(['id_kriteria1' => $newKriteria['id'], 'id_kriteria2' => $newKriteria['id'], 'nilai' => 1]);
+        foreach ($kriteria as $k) {
+            Perbandingan::create(['id_kriteria1' => $k->id, 'id_kriteria2' => $newKriteria['id'], 'nilai' => 1]);
+        }
+        foreach ($kriteria as $k) {
+            $perbandingan = Perbandingan::where(['id_kriteria1' => $newKriteria['id'], 'id_kriteria2' => $k->id])->first();
+            if (!$perbandingan) {
+                Perbandingan::create(['id_kriteria1' => $newKriteria['id'], 'id_kriteria2' => $k->id, 'nilai' => 1]);
+            }
         }
 
 
@@ -111,6 +134,15 @@ class KriteriaController extends Controller
             KriteriaPemain::destroy($kp->id);
         }
 
+        $perbandingan1 = Perbandingan::where('id_kriteria1', $request->id)->get();
+        foreach ($perbandingan1 as $p1) {
+            Perbandingan::destroy($p1->id);
+        }
+
+        $perbandingan2 = Perbandingan::where('id_kriteria2', $request->id)->get();
+        foreach ($perbandingan2 as $p2) {
+            Perbandingan::destroy($p2->id);
+        }
         return redirect()->back()->with('success', 'Data Kriteria berhasil dihapus');
     }
 
@@ -135,5 +167,31 @@ class KriteriaController extends Controller
         }
 
         return redirect('/kriteria')->with('success', 'Data Kriteria Pemain berhasil diubah');
+    }
+
+    public function ubahPerbandingan(Request $request)
+    {
+        // dd($request);
+        if ($request->id_kriteria1 === $request->id_kriteria2) {
+            return redirect('/kriteria')->with('success', 'Data Kriteria Tidak boleh diubah');
+        } else {
+
+            Perbandingan::where(['id_kriteria1' => $request->id_kriteria1, 'id_kriteria2' => $request->id_kriteria2])->update(['nilai' => $request->nilai]);
+            $hasilBagi = 1 / $request->nilai;
+            Perbandingan::where(['id_kriteria1' => $request->id_kriteria2, 'id_kriteria2' => $request->id_kriteria1])->update(['nilai' => round($hasilBagi, 2)]);
+        }
+        return redirect('/kriteria')->with('success', 'Data Kriteria Perbandingan diubah');
+    }
+
+    public function updateBobot(Request $request)
+    {
+        $kriteria = Kriteria::all();
+        // dd($request[4]['bobot']);
+        for ($i = 0; $i < count($kriteria); $i++) {
+
+            Kriteria::where(['id' => $request[$i]['id']])->update(['bobot' => $request[$i]['bobot']]);
+        }
+
+        return redirect('/kriteria')->with('success', 'Bobot berhasil diupdate');
     }
 }

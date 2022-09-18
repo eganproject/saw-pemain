@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class PenilaianController extends Controller
+class HasilController extends Controller
 {
     public function index()
     {
+
         $kriteria = Kriteria::all();
         $alternatif = Alternatif::all();
         $kriteriaPemain = KriteriaPemain::all();
@@ -85,9 +86,9 @@ class PenilaianController extends Controller
         // dd($simpul);
 
         if ($x !== null || $x == null) {
-            return Inertia::render('Admin/Penilaian', ['kriteria' => $kriteria, 'alternatif' => $alternatif, 'kriteriaPemain' => $kriteriaPemain, 'min' => $min, 'max' => $max, 'simpul' => $simpul]);
+            return Inertia::render('Admin/Hasil', ['kriteria' => $kriteria, 'alternatif' => $alternatif, 'kriteriaPemain' => $kriteriaPemain, 'min' => $min, 'max' => $max, 'simpul' => $simpul]);
         } else {
-            return Inertia::render('Admin/Penilaian', ['kriteria' => $kriteria, 'alternatif' => $alternatif, 'kriteriaPemain' => $kriteriaPemain, 'min' => $min, 'max' => $max, 'simpul' => $simpul])->with('pengingat', 'Harap isi data dahulu !!')->with('pengingat', null);
+            return Inertia::render('Admin/Hasil', ['kriteria' => $kriteria, 'alternatif' => $alternatif, 'kriteriaPemain' => $kriteriaPemain, 'min' => $min, 'max' => $max, 'simpul' => $simpul])->with('pengingat', 'Harap isi data dahulu !!')->with('pengingat', null);
         }
     }
 }

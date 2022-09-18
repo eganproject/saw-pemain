@@ -1,15 +1,17 @@
 import React from 'react';
 
 
-const TablePembobotan = ({kriteria, alternatif, kriteriaPemain, min, max, simpul}) =>{
+const TablePembobotan2 = ({kriteria, alternatif, kriteriaPemain, min, max, simpul}) =>{
     const hasilRanks = [];
     const kesimpulannya = []
+    
+    
  
     
     return(
         <>
         
-        <div className="overflow-x-auto px-3 py-4" >
+        <div className="overflow-x-auto px-3 py-4"  id="sembunyiin" hidden>
             <table className="table w-full border-collapse border" >
                 <tbody>
                 <tr>
@@ -171,4 +173,4 @@ const TablePembobotan = ({kriteria, alternatif, kriteriaPemain, min, max, simpul
     )
 }
 
-export default TablePembobotan;
+export default TablePembobotan2;

@@ -24,6 +24,7 @@ export default function Dashboard(props) {
                                     <Link href={route('kriteria')} className="btn btn-primary mr-2">Page Kriteria</Link>
                                     <div>
                                     <Link href={route('penilaian')} className="btn btn-primary mt-2">Page Perhitungan</Link>
+                                    <Link href={route('hasil')} className="btn btn-primary mt-2">Page Hasil</Link>
                                     </div>
                                     </div>
                             </div>
